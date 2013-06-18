@@ -142,3 +142,17 @@ suites:
     chef_client:
       init_style: "init"
       daemon_options: ["-E cook-1951"]
+
+# Test that proxy configuration is generated correctly
+- name: cook-3196
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[chef-client::config]
+  - recipe[chef-client_test::cook-3196]
+  attributes:
+    chef_client:
+      config:
+        http_proxy: "http://localhost:3128"
+        https_proxy: "http://localhost:3128"
+        no_proxy: "localhost,*.localdomain"
+
