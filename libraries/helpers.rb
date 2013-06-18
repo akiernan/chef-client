@@ -124,6 +124,16 @@ module Opscode
           raise "Could not locate the chef-client bin in any known path. Please set the proper path by overriding the node['chef_client']['bin'] attribute."
         end
       end
+
+      # convert from Chef no_proxy format ("localhost,*.localdomain") to
+      # environment variable format ("localhost,.localdomain")
+      def no_proxy_as_env_var
+        unless node["chef_client"]["config"]["no_proxy"].nil?
+          node["chef_client"]["config"]["no_proxy"].split(',').map do |p|
+            p.sub(/^\*\./, '.')
+          end.join(',')
+        end
+      end
     end
   end
 end
