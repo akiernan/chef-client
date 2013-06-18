@@ -56,6 +56,7 @@ end
 # available in the Chef::Resource scope
 d_owner = dir_owner
 d_group = dir_group
+no_proxy = no_proxy_as_env_var
 
 template "#{node["chef_client"]["conf_dir"]}/client.rb" do
   source "client.rb.erb"
@@ -68,7 +69,8 @@ template "#{node["chef_client"]["conf_dir"]}/client.rb" do
     :ohai_disabled_plugins => node['ohai']['disabled_plugins'],
     :start_handlers => node['chef_client']['config']['start_handlers'],
     :report_handlers => node['chef_client']['config']['report_handlers'],
-    :exception_handlers => node['chef_client']['config']['exception_handlers']
+    :exception_handlers => node['chef_client']['config']['exception_handlers'],
+    :no_proxy_env_var => no_proxy
   )
   notifies :create, "ruby_block[reload_client_config]"
 end
